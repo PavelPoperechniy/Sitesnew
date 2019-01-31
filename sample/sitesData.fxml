@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SitesDataController">
+   <children>
+      <VBox layoutX="14.0" prefHeight="400.0" prefWidth="658.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="34.0" prefWidth="828.0">
+               <children>
+                  <Label fx:id="labelNymber" text="Label" AnchorPane.leftAnchor="100.0">
+                     <font>
+                        <Font name="Arial" size="19.0" />
+                     </font></Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </AnchorPane>
+            <AnchorPane prefHeight="280.0" prefWidth="838.0">
+               <children>
+                  <ImageView fx:id="image" fitHeight="277.0" fitWidth="540.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="298.0" AnchorPane.topAnchor="10.0" />
+                  <VBox layoutX="618.0" layoutY="43.0" prefHeight="277.0" prefWidth="265.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                     <children>
+                        <AnchorPane>
+                           <children>
+                              <ComboBox fx:id="seachByLastname" onAction="#comboAction" prefWidth="150.0" promptText="Введите фамилию для поиска" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="60.0">
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </ComboBox>
+                              <Button fx:id="btn_OK" layoutX="213.0" layoutY="2.0" mnemonicParsing="false" onAction="#okAction" text="OK" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="43.0" prefWidth="265.0">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                           <children>
+                              <Button fx:id="btn_Act" layoutX="172.0" layoutY="4.0" mnemonicParsing="false" onAction="#actAction" prefHeight="35.0" prefWidth="93.0" text="Выдать" AnchorPane.rightAnchor="5.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="88.0" prefWidth="522.0">
+               <children>
+                  <Label fx:id="labeltimeStatus" layoutX="16.0" layoutY="10.0" text="Label" AnchorPane.leftAnchor="5.0">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="labelnameUser" layoutX="-1.0" layoutY="30.0" text="Label" AnchorPane.leftAnchor="5.0">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="20.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
