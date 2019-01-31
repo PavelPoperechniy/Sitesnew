@@ -51,10 +51,11 @@ public class SitesDB extends AbstractObgectDb<Sites>{
         sites.setCollection_id(res.getInt("collection_id"));
         sites.setAdress(res.getString("adress"));
         sites.setReservation(ReservationDb.getInstance().createObgectbySites_id(sites.getId()));
-         if((Long)(sites.getReservation().getDate_delivery()) == 0){
-           sites.setBusy(false);
-       }
-       else sites.setBusy(true);
+        if(sites.getReservation()!=null) {
+            if ((Long) (sites.getReservation().getDate_delivery()) == 0) {
+                sites.setBusy(false);
+            } else sites.setBusy(true);
+        }
         return sites;
         
     }
