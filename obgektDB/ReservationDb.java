@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import obgect.Reservation;
-import obgect.User;
+import object.Reservation;
+import object.User;
 
 /**
  * @author lol74
@@ -112,18 +112,7 @@ public class ReservationDb extends AbstractObgectDb<Reservation> {
 
     }
 
-    public boolean returnObgect( Reservation reservation) {
-        boolean flag = false;
-        try {
-             flag = update_dataObgectDB(returnStatement(reservation));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            ConnectDb.getInstance().closeConnection(conn);
-        }
-        return flag;
-    }
+
 
 
     @Override
@@ -143,13 +132,16 @@ public class ReservationDb extends AbstractObgectDb<Reservation> {
         return statement;
     }
 
-    private PreparedStatement returnStatement( Reservation reservation) throws SQLException {
+    @Override
+    public PreparedStatement updateObgectStm(Reservation obgect)throws SQLException {
         String sql = "UPDATE " + TABLE_NAME + " set  date_delivery = ? where id = ?";
         conn = ConnectDb.getInstance().getConnection();
         PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        statement.setLong(1, reservation.getDate_delivery());
-        statement.setLong(2, reservation.getId());
+        statement.setLong(1, obgect.getDate_delivery());
+        statement.setLong(2, obgect.getId());
         return statement;
+
     }
+
 
 }

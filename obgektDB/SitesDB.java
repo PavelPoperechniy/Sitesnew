@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import obgect.Sites;
+import object.Sites;
 
 /**
  *
@@ -119,8 +119,13 @@ public class SitesDB extends AbstractObgectDb<Sites>{
         stat.setString(3,obgect.getAdress());
         return stat;
     }
-    
-     public ArrayList<Sites> getAllObgectByBuff(long collection_id) {
+
+    @Override
+    public PreparedStatement updateObgectStm(Sites obgect) {
+        return null;
+    }
+
+    public ArrayList<Sites> getAllObgectByBuff(long collection_id) {
            ArrayList<Sites> list = null;
         try {
             list =  getAllObgect(allObgectBuffer(getObgectStmByCollection_id(collection_id)));

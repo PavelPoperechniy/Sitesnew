@@ -1,13 +1,17 @@
 package utilits;
 
 import javafx.scene.control.TextField;
-import obgect.Reservation;
-import obgect.Sites;
+import obgektDB.RolesDB;
+import object.Reservation;
+import object.Roles;
+import object.Sites;
+import object.User;
 import obgektDB.ReservationDb;
 import obgektDB.SitesDB;
+import obgektDB.UserDB;
 
+import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
@@ -27,11 +31,39 @@ public class Util_Sites {
     private Util_Sites() {
     }
 
-    public boolean writeSitesFromBD(Sites sites) {// Не реализовано
+    public boolean writeObgectFromDb(Object object) {// Не реализовано
         boolean flag = false;
-         flag =  SitesDB.getInstance().insertObgect(sites);
+        if (object instanceof Sites) {
+            flag = SitesDB.getInstance().insertObgect((Sites) object);
+
+        } else if (object instanceof User) {
+            flag = UserDB.getInstance().insertObgect((User) object);
+        } else if (object instanceof Reservation) {
+            flag = ReservationDb.getInstance().insertObgect((Reservation) (object));
+        } else if (object instanceof Roles) {
+            flag = RolesDB.getInstance().insertObgect((Roles)object);
+
+        }
         return flag;
     }
+
+    public  boolean updateObgectDB(Object object) throws SQLException {
+        boolean flag = false;
+        if (object instanceof Sites) {
+            flag = SitesDB.getInstance().update_dataObgectDB(SitesDB.getInstance().updateObgectStm((Sites)object));
+
+        } else if (object instanceof User) {
+            flag = UserDB.getInstance().update_dataObgectDB(UserDB.getInstance().updateObgectStm((User)object));
+        } else if (object instanceof Reservation) {
+            flag = ReservationDb.getInstance().update_dataObgectDB(ReservationDb.getInstance().updateObgectStm((Reservation)object));
+        } else if (object instanceof Roles) {
+            flag = RolesDB.getInstance().update_dataObgectDB(RolesDB.getInstance().updateObgectStm((Roles)object));
+
+
+        }
+        return flag;
+    }
+
 
     public boolean chekTextFaild(TextField textField) {
         boolean flag = true;
@@ -174,12 +206,12 @@ public class Util_Sites {
         sites.setTimeStatus(str.toString());
     }
 
-    public boolean returnSites(Reservation reservation) {
-        boolean flag = false;
-
-        flag = ReservationDb.getInstance().returnObgect(reservation);
-        return flag;
-    }
+//    public boolean returnSites(Reservation reservation) {
+//        boolean flag = false;
+//
+//        flag = ReservationDb.getInstance().returnObgect(reservation);
+//        return flag;
+//    }
 
 
 }

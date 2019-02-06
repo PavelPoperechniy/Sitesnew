@@ -20,6 +20,8 @@ import interfaceDb.ObgectDB;
  * @author lol74
  */
 public abstract class AbstractObgectDb<T> implements ObgectDB<T>{
+
+
      public ArrayList<T> getAllObgect(PreparedStatement stat){
        ArrayList<T>list = new ArrayList<>();
        ResultSet res = null;

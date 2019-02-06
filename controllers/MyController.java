@@ -15,8 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import obgect.Sites;
-import obgect.User;
+import object.Sites;
+import object.User;
 import obgektDB.SitesDB;
 import obgektDB.UserDB;
 import utilits.Util_Sites;
@@ -30,13 +30,24 @@ public class MyController {
 
 
     private FXMLLoader fxmlLoader = new FXMLLoader();
-    private FXMLLoader sitesDataAdmin = new FXMLLoader();
+    private FXMLLoader loaderSitesDataAdmin = new FXMLLoader();
+    private FXMLLoader loaderAddUser = new FXMLLoader();
+
     private Parent parentDataAdmin;
     private Stage stageDataAdmin;
-    private SitesDataController sitesDataController;
+
+    private Parent parentAddUser;
+    private Stage  stageAddUser;
+
+
     private Parent parentAddSites;
     private Stage stageAddSites;
+
+
+    private SitesDataController sitesDataController;
     private AddSites_Controller controllerAddSites;
+
+
     private ObservableList<Sites> listFreeSites;
     private ObservableList<Sites> listBusySites;
     private HashMap<String,User> listUser;
@@ -79,6 +90,7 @@ public class MyController {
         Sites sites = freeSites.getValue();
         showWindowDataAdmin(sites,true);
         freeSites.getSelectionModel().clearSelection();
+
     }
 
 
@@ -174,6 +186,22 @@ public class MyController {
 
     }
 
+    private void showWindowAddUser(boolean flag){
+        if(stageAddUser == null){
+            stageAddUser = new Stage();
+            stageAddUser.setMinWidth(600);
+            stageAddUser.setMinHeight(400);
+            if(flag){
+                stageAddUser.setTitle("Добавление пользователя");
+            }
+            else {
+                stageAddUser.setTitle("Добавление пользователя");
+            }
+
+
+        }
+    }
+
 
 
     private void showWindowDataAdmin(Sites sites, boolean status){
@@ -224,9 +252,9 @@ public class MyController {
             controllerAddSites = fxmlLoader.getController();
             controllerAddSites.setUser(user);
             controllerAddSites.setParentWindow(thisWindow);
-            sitesDataAdmin.setLocation(getClass().getResource("../sample/sitesData.fxml"));
-            parentDataAdmin = sitesDataAdmin.load();
-            sitesDataController = sitesDataAdmin.getController();
+            loaderSitesDataAdmin.setLocation(getClass().getResource("../sample/sitesData.fxml"));
+            parentDataAdmin = loaderSitesDataAdmin.load();
+            sitesDataController = loaderSitesDataAdmin.getController();
             sitesDataController.setParentWindow(thisWindow);
         } catch (IOException e) {
             e.printStackTrace();

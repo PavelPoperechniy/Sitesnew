@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.collections.ObservableList;
-import obgect.User;
+import object.User;
 
 /**
  *
@@ -183,6 +182,17 @@ public class UserDB extends AbstractObgectDb<User>{
         stm.setLong(5, obgect.getRole_id());
         stm.setLong(6, obgect.getCollection_id());
        return stm;
+    }
+
+    @Override
+    public PreparedStatement updateObgectStm(User obgect) throws SQLException {
+        String sql  = "UPDATE "+TABLE_NAME+" SET  last_name  = ? , ferst_name = ? , role_id = ?  ";
+        conn = ConnectDb.getInstance().getConnection();
+        PreparedStatement stat = conn.prepareStatement(sql);
+        stat.setString(1,obgect.getLast_name());
+        stat.setString(2,obgect.getFerst_name());
+        stat.setLong(3,obgect.getRole_id());
+        return null;
     }
 
     private PreparedStatement searchBy_partNameStm(String text) throws SQLException {

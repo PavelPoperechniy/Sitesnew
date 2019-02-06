@@ -17,9 +17,10 @@ import java.util.ArrayList;
 public interface ObgectDB<T> {
     ArrayList<T> getAllObgect(PreparedStatement stat);
     T createObgect(ResultSet res) throws SQLException;
-    boolean insertObgect(T obgectDb);
+    boolean insertObgect(T obgectDb) throws SQLException;
     long insertNewObgect(PreparedStatement stm) throws SQLException;
      T createObgectbyId(long id);
      ArrayList<T> getAllObgect(long id);
      PreparedStatement insertStm (T obgect) throws SQLException;
+     PreparedStatement updateObgectStm(T obgect) throws SQLException;
 }

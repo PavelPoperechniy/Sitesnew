@@ -1,10 +1,9 @@
 package controllers;
 
 import informWindows.InformWindow;
-import javafx.scene.control.Label;
 import javafx.stage.Window;
-import obgect.Reservation;
-import obgect.User;
+import object.Reservation;
+import object.User;
 import obgektDB.ReservationDb;
 import obgektDB.SitesDB;
 import javafx.collections.ObservableList;
@@ -13,7 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import obgect.Sites;
+import object.Sites;
 import obgektDB.UserDB;
 import utilits.Util_Sites;
 
@@ -77,7 +76,7 @@ public class AddSites_Controller {
                     sites.setNumber(nomer);
                     sites.setAdress(adress_Sites.getText());
                     sites.setCollection_id(user.getCollection_id());
-                    if(Util_Sites.getInstance().writeSitesFromBD(sites)) {
+                    if(Util_Sites.getInstance().writeObgectFromDb(sites)) {
                         createReservation(sites.getId());
                         addListSites(sites);
                         adress_Sites.clear();

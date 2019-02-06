@@ -13,26 +13,19 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
 import javafx.stage.Window;
-import obgect.Reservation;
-import obgect.Sites;
-import obgect.User;
+import object.Reservation;
+import object.Sites;
+import object.User;
 import obgektDB.ReservationDb;
 import utilits.Util_Sites;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.sql.SQLException;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
 
 public class SitesDataController {
 
@@ -226,16 +219,21 @@ public class SitesDataController {
         if(!sites.isBusy()) {
             long thisData = new GregorianCalendar().getTimeInMillis()/MICROSECOND;
             sites.getReservation().setDate_delivery(thisData);
-            if (Util_Sites.getInstance().returnSites(sites.getReservation())) {
-                parentController.getListBusySites().removeAll(sites);
-                sites.setBusy(true);
-                Util_Sites.getInstance().chekDate(sites, true);
-                parentController.getListFreeSites().addAll(sites);
+            try {
+                if (Util_Sites.getInstance().updateObgectDB(sites.getReservation())) {
+                    parentController.getListBusySites().removeAll(sites);
+                    sites.setBusy(true);
+                    Util_Sites.getInstance().chekDate(sites, true);
+                    parentController.getListFreeSites().addAll(sites);
 
 
-            } else {
+                } else {
+                    InformWindow informWindow = new InformWindow();
+                    informWindow.informWindow("", "Операция не успешна");
+                }
+            } catch (SQLException e) {
                 InformWindow informWindow = new InformWindow();
-                informWindow.informWindow("", "Операция не успешна");
+                informWindow.errorWindow("Ошибка соединения", "Проверте настройки сети");
             }
         }
 

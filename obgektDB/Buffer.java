@@ -1,6 +1,6 @@
 package obgektDB;
 
-import obgect.Reservation;
+import object.Reservation;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
