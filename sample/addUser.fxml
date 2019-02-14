@@ -23,7 +23,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="text_fname" layoutX="184.0" layoutY="41.0" prefHeight="25.0" prefWidth="260.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="184.0" AnchorPane.rightAnchor="156.0">
+                  <TextField fx:id="text_fname" layoutX="184.0" layoutY="41.0" prefHeight="25.0" prefWidth="260.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="184.0" AnchorPane.rightAnchor="150.0">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
@@ -40,7 +40,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="text_lastName" layoutX="188.0" layoutY="45.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="184.0" AnchorPane.rightAnchor="156.0">
+                  <TextField fx:id="text_lastName" layoutX="188.0" layoutY="45.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="184.0" AnchorPane.rightAnchor="150.0">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
@@ -58,21 +58,45 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <children>
-                  <Label layoutX="66.0" layoutY="4.0" text="Роль" AnchorPane.leftAnchor="40.0">
+                  <Label layoutX="66.0" layoutY="4.0" text="Роль" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="combo_role" layoutX="271.0" layoutY="8.0" prefWidth="150.0" AnchorPane.leftAnchor="271.0" />
+                  <ComboBox fx:id="combo_role" layoutX="271.0" layoutY="8.0" prefWidth="150.0" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="150.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="combo_Role" prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane fx:id="combo_Role" prefHeight="40.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="btn_Act" layoutX="52.0" layoutY="99.0" mnemonicParsing="false" onAction="#btnAction" text="Сохранить">
+                  <Label fx:id="labelСhoiceUser" text="Выберите пользователя" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="10.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="combo_listUser" layoutX="288.0" layoutY="15.0" prefWidth="150.0" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="100.0" />
+                  <Button fx:id="btn_ok" layoutX="524.0" layoutY="15.0" mnemonicParsing="false" onAction="#okAktion" text="ok">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="btn_Act" layoutX="33.0" layoutY="91.0" mnemonicParsing="false" onAction="#btnAction" text="Сохранить" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="40.0">
                      <font>
                         <Font size="14.0" />
                      </font></Button>
                </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </AnchorPane>
          </children>
       </VBox>

@@ -85,6 +85,25 @@ public class ReservationDb extends AbstractObgectDb<Reservation> {
         return status;
     }
 
+    public boolean insertReservationWithoutUser(Reservation reservation){
+        long id = 0;
+        boolean status = false;
+        try {
+
+            id = insertNewObgect(insertStmWithoutUser(reservation));
+            if (id > 0) {
+                status = true;
+                reservation.setId(id);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservationDb.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectDb.getInstance().closeConnection(conn);
+        }
+        return status;
+    }
+
     @Override
     public Reservation createObgectbyId(long id) {
         Reservation res = null;
@@ -113,8 +132,6 @@ public class ReservationDb extends AbstractObgectDb<Reservation> {
     }
 
 
-
-
     @Override
     public ArrayList<Reservation> getAllObgect(long id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Template
@@ -131,14 +148,24 @@ public class ReservationDb extends AbstractObgectDb<Reservation> {
         statement.setLong(4, obgect.getUser().getId());
         return statement;
     }
+    public PreparedStatement insertStmWithoutUser(Reservation obgect)throws SQLException{
+        String sql = "INSERT INTO " + TABLE_NAME + " (sites_id, date_issue, date_delivery) VALUES (?,?,?)";
+        conn = ConnectDb.getInstance().getConnection();
+        PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        statement.setLong(1, obgect.getSites_id());
+        statement.setLong(2, obgect.getDate_issue());
+        statement.setLong(3, obgect.getDate_delivery());
+        return statement;
+    }
 
     @Override
-    public PreparedStatement updateObgectStm(Reservation obgect)throws SQLException {
-        String sql = "UPDATE " + TABLE_NAME + " set  date_delivery = ? where id = ?";
+    public PreparedStatement updateObgectStm(Reservation obgect) throws SQLException {
+        String sql = "UPDATE " + TABLE_NAME + " set  date_delivery = ?, user_id = ? where id = ?";
         conn = ConnectDb.getInstance().getConnection();
         PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         statement.setLong(1, obgect.getDate_delivery());
-        statement.setLong(2, obgect.getId());
+        statement.setLong(2,obgect.getUser().getId());
+        statement.setLong(3, obgect.getId());
         return statement;
 
     }

@@ -121,8 +121,16 @@ public class SitesDB extends AbstractObgectDb<Sites>{
     }
 
     @Override
-    public PreparedStatement updateObgectStm(Sites obgect) {
-        return null;
+    public PreparedStatement updateObgectStm(Sites obgect) throws SQLException {
+        String sql = "UPDATE "+TABLE_NAME+" set number = ?, collection_id = ?,adress = ? where id = ?";
+        conn = ConnectDb.getInstance().getConnection();
+        PreparedStatement stat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        stat.setInt(1,obgect.getNumber());
+        stat.setLong(2,obgect.getCollection_id());
+        stat.setString(3,obgect.getAdress());
+        stat.setLong(4,obgect.getId());
+        return stat;
+
     }
 
     public ArrayList<Sites> getAllObgectByBuff(long collection_id) {

@@ -55,6 +55,7 @@ public class RolesDB extends AbstractObgectDb<Roles> {
 
     @Override
     public Roles createObgectbyId(long id) {
+
         return null;
     }
 

@@ -1,18 +1,20 @@
 package controllers;
 
 import informWindows.InformWindow;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import object.Reservation;
 import object.Sites;
@@ -22,6 +24,7 @@ import utilits.Util_Sites;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -37,10 +40,15 @@ public class SitesDataController {
     private boolean statusCombo;
     private boolean init;
     private HashMap<String, User> listUser;
-    private ObservableList<String> listComboBox;
+    private ObservableList<String> listComboBox = FXCollections.observableArrayList();
     private MyController parentController;
     private long MICROSECOND = 1000;
     private int count = 0;
+    private FXMLLoader loaderRedact = new FXMLLoader();
+    private Parent parentRedact;
+    private Stage  stageRedact;
+    private RedactSitesController controllerRedact;
+    private Window thisWindow;
 
     @FXML
     private Label labelNymber;
@@ -53,27 +61,33 @@ public class SitesDataController {
     @FXML
     private Button btn_OK;
     @FXML
+    private Button btn_Redact;
+    @FXML
     private ImageView image;
     @FXML
     private ComboBox<String> seachByLastname;
 
 
+
+
     public void initDataWindow(Sites sites) {
-        listUser = parentController.getListUser();
+      //  listUser = parentController.getListUser();
         if (sites.isBusy()) {
             mode = true;
         } else mode = false;
         initComboBox();
         init_btn_Act();
         initLabel();
+        initImages();
         init = true;
-        listComboBox = FXCollections.observableArrayList();
         user = parentController.getUser();
 
     }
 
     public void okAction(ActionEvent actionEvent) {
-        listComboBox.clear();
+        if (!listComboBox.isEmpty()) {
+            listComboBox.clear();
+        }
         String value = seachByLastname.getValue();
             if (value != null) {
                 for (Map.Entry<String, User> item : listUser.entrySet()) {
@@ -110,31 +124,21 @@ public class SitesDataController {
 
     }
 
+
+    public void redactAction(ActionEvent actionEvent) {
+        if(thisWindow == null) {
+            thisWindow = ((Node) actionEvent.getSource()).getScene().getWindow();
+        }
+        if(parentRedact == null){
+            initChildWindow();
+        }
+
+        showRedactSitesWindow();
+        controllerRedact.initRedactWindow();
+        controllerRedact.setListUser(listUser);
+    }
+
     public void comboAction(ActionEvent actionEvent) {
-
-/*           String value = seachByLastname.getValue();
-            if(init) {
-                if (value != null) {
-                    for (Map.Entry<String, User> item : listUser.entrySet()) {
-                        if (item.getKey().toLowerCase().contains(value.toLowerCase())) {
-                            if (!listComboBox.contains(item.getKey())) {
-                                listComboBox.add(item.getKey());
-
-                            }
-                        }
-                    }
-                    seachByLastname.getItems().clear();
-                }
-
-                seachByLastname.getItems().addAll(listComboBox);
-            }
-            else  {
-                 count++;
-                if(count == 1){
-                    init = true;
-                }
-            }
-*/
 
 
     }
@@ -143,16 +147,7 @@ public class SitesDataController {
         if (mode) {
             seachByLastname.setEditable(true);
             seachByLastname.setVisible(true);
-            seachByLastname.valueProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
-                  //  seachByLastname.setValue(oldValue);
-                    System.out.println(observable);
-                    System.out.println(oldValue);
-                    System.out.println(newValue);
-                }
-            });
         } else seachByLastname.setVisible(false);
     }
 
@@ -170,28 +165,40 @@ public class SitesDataController {
         return user;
     }
 
-    private void initLabel() {
+    public void initLabel() {
         labelNymber.setText(sites.toString());
         labeltimeStatus.setText(sites.getTimeStatus());
-
-
         String str = "";
         if (sites.getReservation() != null) {
-            if (!sites.isBusy()) {
-                str = "Обрабатывает " + sites.getReservation().getUser().getLast_name() + " " + sites.getReservation().getUser().getFerst_name();
-            } else
-                str = "Сдал участок " + sites.getReservation().getUser().getLast_name() + " " + sites.getReservation().getUser().getFerst_name();
+            str = chekUserbyNull(sites);
         } else {
-            str = "Данные о возвещателе отсутствуют";
+            str = "Данные о обработке участка отсутствуют";
         }
         labelnameUser.setText(str);
+    }
 
+
+    private void initImages(){
         try {
             FileInputStream stream = new FileInputStream("F://Foto_sites//foto1.png");
             image.setImage(new Image(stream));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+
+    private String chekUserbyNull(Sites sites){
+        String text;
+        Reservation reservation = sites.getReservation();
+        if(reservation.getUser()!=null){
+            User user = reservation.getUser();
+            if(sites.isBusy()) {
+                text = "Участок сдал " + user.getLast_name() + " " + user.getFerst_name();
+            }
+            else text = "Участок обрабатывает " + user.getLast_name() + " " + user.getFerst_name();
+        }else text = "Данных о возвещателе нет";
+        return text;
     }
 
     private void giveSites(){
@@ -238,6 +245,32 @@ public class SitesDataController {
         }
 
     }
+    private void initChildWindow()  {
+
+        try {
+            loaderRedact.setLocation(getClass().getResource("../sample/redactSites.fxml"));
+            parentRedact = loaderRedact.load();
+            controllerRedact = loaderRedact.getController();
+            controllerRedact.setParentController(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void showRedactSitesWindow(){
+        if (stageRedact == null){
+            stageRedact = new Stage();
+            stageRedact.setMinWidth(680);
+            stageRedact.setMinHeight(570);
+            stageRedact.setTitle("Редактирование участка");
+            stageRedact.setScene(new Scene(parentRedact));
+            stageRedact.initOwner(thisWindow);
+
+        }
+        controllerRedact.setSites(sites);
+        stageRedact.show();
+
+    }
 
     public void setParentWindow(Window parentWindow) {
         this.parentWindow = parentWindow;
@@ -272,4 +305,12 @@ public class SitesDataController {
         this.parentController = parentController;
     }
 
+
+    public MyController getParentController() {
+        return parentController;
+    }
+
+    public HashMap<String, User> getListUser() {
+        return listUser;
+    }
 }

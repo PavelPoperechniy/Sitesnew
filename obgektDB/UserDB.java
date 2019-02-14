@@ -174,25 +174,26 @@ public class UserDB extends AbstractObgectDb<User>{
     @Override
     public PreparedStatement insertStm(User obgect) throws SQLException {
          conn = ConnectDb.getInstance().getConnection();
-        PreparedStatement stm = conn.prepareStatement("INSERT INTO "+TABLE_NAME+" (last_name, ferst_name, login, password, role_id, collection_id) VALUES (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stm = conn.prepareStatement("INSERT INTO "+TABLE_NAME+" (last_name, ferst_name,  role_id, collection_id) VALUES (?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
         stm.setString(1, obgect.getLast_name());
         stm.setString(2, obgect.getFerst_name());
-        stm.setString(3, obgect.getLogin());
-        stm.setString(4, obgect.getPassword());
-        stm.setLong(5, obgect.getRole_id());
-        stm.setLong(6, obgect.getCollection_id());
+       // stm.setString(3, obgect.getLogin());
+      //  stm.setString(4, obgect.getPassword());
+        stm.setLong(3, obgect.getRole_id());
+        stm.setLong(4, obgect.getCollection_id());
        return stm;
     }
 
     @Override
     public PreparedStatement updateObgectStm(User obgect) throws SQLException {
-        String sql  = "UPDATE "+TABLE_NAME+" SET  last_name  = ? , ferst_name = ? , role_id = ?  ";
+        String sql  = "UPDATE "+TABLE_NAME+" SET  last_name  = ? , ferst_name = ? , role_id = ? where id = ?";
         conn = ConnectDb.getInstance().getConnection();
         PreparedStatement stat = conn.prepareStatement(sql);
         stat.setString(1,obgect.getLast_name());
         stat.setString(2,obgect.getFerst_name());
         stat.setLong(3,obgect.getRole_id());
-        return null;
+        stat.setLong(4,obgect.getId());
+        return stat;
     }
 
     private PreparedStatement searchBy_partNameStm(String text) throws SQLException {

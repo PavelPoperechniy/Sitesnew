@@ -1,6 +1,7 @@
 package controllers;
 
 import informWindows.InformWindow;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,6 +34,7 @@ public class MyController {
     private FXMLLoader loaderSitesDataAdmin = new FXMLLoader();
     private FXMLLoader loaderAddUser = new FXMLLoader();
 
+
     private Parent parentDataAdmin;
     private Stage stageDataAdmin;
 
@@ -46,6 +48,7 @@ public class MyController {
 
     private SitesDataController sitesDataController;
     private AddSites_Controller controllerAddSites;
+    private AddUser_Controller controllerAddUser;
 
 
     private ObservableList<Sites> listFreeSites;
@@ -78,7 +81,7 @@ public class MyController {
     private void initialize() {
 
         operationsIni();
-        initListFreeSites();
+        initListSites();
         initChildWindow();
         listUser = UserDB.getInstance().getAllUser(user.getCollection_id());
 
@@ -87,18 +90,24 @@ public class MyController {
 
     public void freeSitesAction(ActionEvent actionEvent) {
         initWindow(actionEvent);
-        Sites sites = freeSites.getValue();
-        showWindowDataAdmin(sites,true);
-        freeSites.getSelectionModel().clearSelection();
+        if(freeSites.getValue() != null) {
+            Sites sites = freeSites.getValue();
+            showWindowDataAdmin(sites, true);
 
+        }
+        Platform.runLater(() -> freeSites.getSelectionModel().clearSelection());
     }
 
 
     public void busySitesAction(ActionEvent actionEvent) {
         initWindow(actionEvent);
-        Sites sites = busySites.getValue();
-        showWindowDataAdmin(sites,false);
-        busySites.getSelectionModel().clearSelection();// очищаем выбор ComboBox
+        if(busySites.getValue()!= null) {
+            Sites sites = busySites.getValue();
+            showWindowDataAdmin(sites, false);
+
+        }
+        Platform.runLater(() -> busySites.getSelectionModel().clearSelection());// очищаем выбор ComboBox
+
     }
 
 
@@ -116,6 +125,9 @@ public class MyController {
                         showWindowDataAdmin(sites,true);
                     }
                     else { showWindowDataAdmin(sites,false);}
+                }else {
+                    InformWindow informWindow = new InformWindow();
+                    informWindow.informWindow("Ошибка данных","Участка с таким номером не существует");
                 }
             }
             catch (NumberFormatException ex){
@@ -137,34 +149,49 @@ public class MyController {
 
     public void operationsAction(ActionEvent actionEvent) {
         initWindow(actionEvent);
-        switch (operations.getValue()) {
-            case "Добавить участок": {
-                controllerAddSites.setList(listFreeSites);
-                showWindowAddSites();
-                break;
-            }
-            case "Удалить участок": {
+        String val = operations.getValue();
+        if(val!=null) {
+            switch (val) {
+                case "Добавить участок": {
+                    controllerAddSites.setList(listFreeSites);
+                    showWindowAddSites();
+                    break;
+                }
+                case "Редактировать участок": {
 
-                break;
-            }
-            case "Добавить пользователя": {
+                    break;
+                }
+                case "Добавить пользователя": {
+                    controllerAddUser.setEdit(false);
+                    controllerAddUser.setParentController(this);
+                    controllerAddUser.initWIndow();
+                    showWindowAddUser();
 
-                break;
-            }
-            case "Удалить пользователя": {
+                    break;
+                }
+                case "Удалить пользователя": {
 
-                break;
+                    break;
+                }
+                case "Редактировать пользователя": {
+                    controllerAddUser.setEdit(true);
+                    controllerAddUser.setParentController(this);
+                    controllerAddUser.initWIndow();
+                    showWindowAddUser();
+                }
             }
         }
-        operations.getSelectionModel().clearSelection();
+
+        Platform.runLater(() -> operations.getSelectionModel().clearSelection());
     }
 
     private void operationsIni() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Добавить участок");
-        list.add("Удалить участок");
+        list.add("Редактировать участок");
         list.add("Добавить пользователя");
         list.add("Удалить пользователя");
+        list.add("Редактировать пользователя");
         ObservableList<String> stringObservableList = FXCollections.observableList(list);
         operations.setItems(stringObservableList);
     }
@@ -215,19 +242,44 @@ public class MyController {
             stageDataAdmin.setScene(new Scene(parentDataAdmin));
             stageDataAdmin.initOwner(thisWindow);
         }
-        if(sites.getReservation()!= null) {
-            Util_Sites.getInstance().chekDate(sites, status);
+        try {
+            if(sites.getReservation()!= null) {
+                Util_Sites.getInstance().chekDate(sites, status);
+            }
+            else {sites.setTimeStatus("Данных о обработке участка нет");}
+            sitesDataController.setSites(sites);
+            sitesDataController.setParentController(this);
+
+
+        }catch (NullPointerException ex){
+
         }
-        else {sites.setTimeStatus("Данных о обработке участка нет");}
-          sitesDataController.setSites(sites);
-          sitesDataController.setParentController(this);
-          sitesDataController.initDataWindow(sites);
-        //  sitesDataController.setListUser(listUser);
+
+
+          sitesDataController.setListUser(listUser);
+
 
           stageDataAdmin.show();
+          sitesDataController.initDataWindow(sites);
     }
 
-    private void initListFreeSites() {
+    private void showWindowAddUser(){
+        if(stageAddUser == null){
+            stageAddUser = new Stage();
+            stageAddUser.setMinWidth(600);
+            stageAddUser.setMinHeight(400);
+            stageAddUser.setTitle("Добавление пользователя");
+            stageAddUser.initModality(Modality.WINDOW_MODAL);
+            stageAddUser.setScene(new Scene(parentAddUser));
+            stageAddUser.initOwner(thisWindow);
+        }
+
+        stageAddUser.show();
+
+
+    }
+
+    public void initListSites() {
         ArrayList<Sites> list = new ArrayList<>();
         ArrayList<Sites> listFree = new ArrayList<>();
         ArrayList<Sites> listBusy = new ArrayList<>();
@@ -252,10 +304,17 @@ public class MyController {
             controllerAddSites = fxmlLoader.getController();
             controllerAddSites.setUser(user);
             controllerAddSites.setParentWindow(thisWindow);
+
             loaderSitesDataAdmin.setLocation(getClass().getResource("../sample/sitesData.fxml"));
             parentDataAdmin = loaderSitesDataAdmin.load();
             sitesDataController = loaderSitesDataAdmin.getController();
             sitesDataController.setParentWindow(thisWindow);
+
+            loaderAddUser.setLocation(getClass().getResource("../sample/addUser.fxml"));
+            parentAddUser = loaderAddUser.load();
+            controllerAddUser = loaderAddUser.getController();
+            controllerAddUser.setUser(user);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

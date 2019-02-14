@@ -1,5 +1,6 @@
 package utilits;
 
+import javafx.application.Platform;
 import javafx.scene.control.TextField;
 import obgektDB.RolesDB;
 import object.Reservation;
@@ -13,6 +14,8 @@ import obgektDB.UserDB;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Util_Sites {
@@ -106,20 +109,21 @@ public class Util_Sites {
             if (days > 0) {
                 int mounth = (int) days / MOUNTH;
                 if (mounth > 0) {
-
+                    str.append(" " + mounth);
                     days = days - mounth * MOUNTH;
+
+                    if (mounth == 1) {
+                        str.append(" месяц");
+                    }
+                    if (mounth > 1 && mounth < 5) {
+                        str.append(" месяца");
+                    }
+                    if (mounth > 4) {
+                        str.append(" месяцев");
+                        sites.getReservation().setLongInwork(true);
+                    }
                 }
-                str.append(" " + mounth);
-                if (mounth == 1) {
-                    str.append(" месяц");
-                }
-                if (mounth > 1 && mounth < 5) {
-                    str.append(" месяца");
-                }
-                if (mounth > 4) {
-                    str.append(" месяцев");
-                    sites.getReservation().setLongInwork(true);
-                }
+
 
                 if (days > 0) {
                     str.append(" " + days);
@@ -146,9 +150,9 @@ public class Util_Sites {
         int mounth = 0;
         long result = thisDate.getTimeInMillis() - (sites.getReservation().getDate_delivery()) * MILLISECOND;
         long days = TimeUnit.MILLISECONDS.toDays(result);
-        if (days > 0) {
+
             str.append("Сдан : ");
-        }
+
         year = (int) days / YEAR;
         if (year > 0) {
             days = days - year * YEAR;
@@ -201,17 +205,32 @@ public class Util_Sites {
         if (year > 0 || mounth > 0 || days > 0) {
             str.append(" тому назад");
         } else {
-            str.append("Mеньше дня тому назад");
+            str.append(" меньше дня тому назад");
         }
         sites.setTimeStatus(str.toString());
     }
 
-//    public boolean returnSites(Reservation reservation) {
-//        boolean flag = false;
-//
-//        flag = ReservationDb.getInstance().returnObgect(reservation);
-//        return flag;
-//    }
+
+    public void updateListUser(HashMap<String,User> list, User user){
+        for(Map.Entry<String,User>entry:list.entrySet()){
+            if(entry.getValue().equals(user)){
+                Platform.runLater(()->list.remove(user));
+                list.put(user.toString(),user);
+                return;
+            }
+        }
+    }
+
+    public boolean checkListByKey(HashMap<String,User>list,User user){
+        boolean flag = false;
+        for (Map.Entry<String,User>entry:list.entrySet()){
+            if(entry.getKey().toLowerCase().equals(user.toString().toLowerCase())){
+                flag = true;
+                return flag;
+            }
+        }
+        return flag;
+    }
 
 
 }

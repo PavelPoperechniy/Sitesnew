@@ -28,7 +28,6 @@ public class AddSites_Controller {
 
     private User user;
     private  ObservableList<Sites> listSites;
-    private long USER_ADMIN = 3;
     private int TIME_MICRO = 1000;
 
     public void setParentWindow(Window parentWindow) {
@@ -78,6 +77,7 @@ public class AddSites_Controller {
                     sites.setCollection_id(user.getCollection_id());
                     if(Util_Sites.getInstance().writeObgectFromDb(sites)) {
                         createReservation(sites.getId());
+                        sites.setBusy(true);
                         addListSites(sites);
                         adress_Sites.clear();
                         nomer_Sites.clear();
@@ -118,13 +118,12 @@ public class AddSites_Controller {
 
   private void createReservation(long sites_id ){
       Reservation reservation = new Reservation();
-      reservation.setUser(UserDB.getInstance().createObgectbyId(USER_ADMIN));//что будет если этого юзера удалят?
       reservation.setSites_id(sites_id);
       reservation.setDate_issue(0);
       Calendar calendar = new GregorianCalendar();
       long time = calendar.getTimeInMillis()/TIME_MICRO;
       reservation.setDate_delivery(time);
-      ReservationDb.getInstance().insertObgect(reservation);
+      ReservationDb.getInstance().insertReservationWithoutUser(reservation);
 
 
   }
