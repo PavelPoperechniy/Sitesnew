@@ -57,7 +57,7 @@ public class MyController {
 
 
 
-    private User user = new User(1);//TODO передавать user из окна входа после проверки логина и пароля
+    private User user;//TODO передавать user из окна входа после проверки логина и пароля
     private Window thisWindow;
     private Stage thisStage;
 // ---------------------------------------------------------
@@ -78,13 +78,14 @@ public class MyController {
 
     //------------------------------------------------------------
     @FXML
-    private void initialize() {
+    private void initialize() {}
 
+
+    public void  initWindow(){
         operationsIni();
         initListSites();
         initChildWindow();
         listUser = UserDB.getInstance().getAllUser(user.getCollection_id());
-
     }
 
 
@@ -114,7 +115,7 @@ public class MyController {
     public void searchAction(ActionEvent actionEvent) {
 
         initWindow(actionEvent);
-        if(Util_Sites.getInstance().chekTextFaild(searchSites)){
+        if(Util_Sites.getInstance().checkEmptyTextField(searchSites)){
 
             try {
                 long nomer = Integer.parseInt(searchSites.getText());

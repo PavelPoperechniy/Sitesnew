@@ -15,8 +15,9 @@ import java.util.ArrayList;
 public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
+      //  Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("windowStart.fxml"));
+        primaryStage.setTitle("Авторизация");
         primaryStage.setScene(new Scene(root, 650, 400));
         primaryStage.setMinHeight(400);
         primaryStage.setMinWidth(650);

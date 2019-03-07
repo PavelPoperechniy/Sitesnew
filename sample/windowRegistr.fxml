@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="274.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WindowRegistrController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="67.0" prefWidth="600.0">
+               <children>
+                  <Label layoutX="66.0" layoutY="25.0" text="Номер собрания" AnchorPane.leftAnchor="50.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="textNumber" layoutX="257.0" layoutY="14.0" prefHeight="37.0" prefWidth="270.0" promptText="введите номер" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="70.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="59.0" prefWidth="600.0">
+               <children>
+                  <Label layoutX="52.0" layoutY="21.0" text="Имя" AnchorPane.leftAnchor="50.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="textName" layoutX="260.0" layoutY="10.0" prefHeight="37.0" prefWidth="270.0" promptText="введите имя" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="70.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="78.0" prefWidth="600.0">
+               <children>
+                  <Label layoutX="53.0" layoutY="31.0" text="Фамилия" AnchorPane.leftAnchor="50.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="textLastName" layoutX="263.0" layoutY="20.0" prefHeight="37.0" prefWidth="270.0" promptText="введите фамилию" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="70.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="118.0" prefWidth="600.0">
+               <children>
+                  <Button layoutX="479.0" layoutY="41.0" mnemonicParsing="false" onAction="#continueAction" text="Продолжить" AnchorPane.rightAnchor="70.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

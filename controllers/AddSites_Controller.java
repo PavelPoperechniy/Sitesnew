@@ -13,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import object.Sites;
-import obgektDB.UserDB;
 import utilits.Util_Sites;
 
 import java.sql.SQLException;
@@ -67,7 +66,7 @@ public class AddSites_Controller {
 
     private void addSites(){
 
-        if(Util_Sites.getInstance().chekTextFaild(adress_Sites)&&Util_Sites.getInstance().chekTextFaild(nomer_Sites)) {//проверка на пустые строки
+        if(Util_Sites.getInstance().checkEmptyTextField(adress_Sites)&&Util_Sites.getInstance().checkEmptyTextField(nomer_Sites)) {//проверка на пустые строки
             Sites sites = new Sites();
             try {
                 int nomer = Integer.parseInt(nomer_Sites.getText());

@@ -2,7 +2,6 @@ package controllers;
 
 import informWindows.InformWindow;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -73,14 +72,14 @@ public class AddUser_Controller {
 
     private void editUser() {
 
-        if (Util_Sites.getInstance().chekTextFaild(text_fname) && Util_Sites.getInstance().chekTextFaild(text_lastName)) {
+        if (Util_Sites.getInstance().checkEmptyTextField(text_fname) && Util_Sites.getInstance().checkEmptyTextField(text_lastName)) {
             if (combo_role.getValue() != null) {
                 editUser.setRole_id(combo_role.getValue().getId());
             }
             editUser.setFerst_name(text_fname.getText());
             editUser.setLast_name(text_lastName.getText());
             try {
-                if (!Util_Sites.getInstance().checkListByKey(listUser, editUser)) {
+               // if (!Util_Sites.getInstance().checkListByKey(listUser, editUser)) {
                     if (Util_Sites.getInstance().updateObgectDB(editUser)) {
                         InformWindow informWindow = new InformWindow();
                         informWindow.informWindow("Статус операции", "Данные успешно изменены");
@@ -95,12 +94,12 @@ public class AddUser_Controller {
                         informWindow.informWindow("Статус операции", "Данные не обновлены проверте соединение");
 
                     }
-                } else {
-                    InformWindow informWindow = new InformWindow();
-                    informWindow.informWindow("Ошибка данных", "Пользователь с такими данными уже существует \n Измените имя как в примере \n Ваня - Иван\n Витя - Виктор");
-                    Platform.runLater(() -> text_fname.clear());
-                    Platform.runLater(() -> text_lastName.clear());
-                }
+//                } else {
+//                    InformWindow informWindow = new InformWindow();
+//                    informWindow.informWindow("Ошибка данных", "Пользователь с такими данными уже существует \n Измените имя как в примере \n Ваня - Иван\n Витя - Виктор");
+//                    Platform.runLater(() -> text_fname.clear());
+//                    Platform.runLater(() -> text_lastName.clear());
+//                }
 
             } catch (SQLException e) {
                 InformWindow informWindow = new InformWindow();
@@ -117,7 +116,7 @@ public class AddUser_Controller {
     private void addUser() {
         User newUser = new User();
 
-        if (Util_Sites.getInstance().chekTextFaild(text_fname) && Util_Sites.getInstance().chekTextFaild(text_lastName)) {
+        if (Util_Sites.getInstance().checkEmptyTextField(text_fname) && Util_Sites.getInstance().checkEmptyTextField(text_lastName)) {
             if (combo_role.getValue() != null) {
                 newUser.setRole_id(combo_role.getValue().getId());
             }

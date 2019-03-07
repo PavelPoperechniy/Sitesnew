@@ -18,8 +18,11 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 public class ConnectDb {
     private static ConnectDb instance = null;
     private final String USER = "root";
+    private final String USER1 = "usersuper";
     private final String PASSWORD = "root";
-    private final String  URL = "jdbc:mysql://localhost:3306/sites?allowPublicKeyRetrieval = true & useSSL = false ";     
+    private final String PASSWORD1 ="I)tV~MWqwy3V";
+    private final String  URL = "jdbc:mysql://localhost:3306/sites?allowPublicKeyRetrieval = true & useSSL = false ";
+    private final String URL1 = "jdbc:mysql://144.76.61.210/sites?allowPublicKeyRetrieval = true & useSSL = false";
     private Connection conn = null;
 
     public static ConnectDb getInstance() {

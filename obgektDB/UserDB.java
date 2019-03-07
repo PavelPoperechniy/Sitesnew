@@ -57,34 +57,10 @@ public class UserDB extends AbstractObgectDb<User>{
    }
    
    
-//   private User getObgect(PreparedStatement stat) throws SQLException{
-//       User user  = null;
-//       ResultSet res = null;
-//       res = stat.executeQuery();
-//       res.next();
-//       if(res.isFirst()){
-//           user = createObgect(res);
-//       }
-//       return user;
-//   }
-//   
-//  
-   
-//   private ArrayList<User> getAllObgect(PreparedStatement stat){
-//       ArrayList<User>list = new ArrayList<>();
-//       ResultSet res = null;
-//        try {
-//            res = stat.executeQuery();
-//            while (res.next()) {
-//                list.add(createObgect(res));
-//                
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//       return list;
-//   }
-   
+public boolean checkRepeatLogin(String login) throws SQLException {
+       boolean repeatLogin = chekObgect(checkRepeatLoginStm(login));
+        return repeatLogin;
+}
     @Override
    public User createObgectbyId(long id){
        User user = null;
@@ -186,13 +162,22 @@ public class UserDB extends AbstractObgectDb<User>{
 
     @Override
     public PreparedStatement updateObgectStm(User obgect) throws SQLException {
-        String sql  = "UPDATE "+TABLE_NAME+" SET  last_name  = ? , ferst_name = ? , role_id = ? where id = ?";
+        String sql  = "UPDATE "+TABLE_NAME+" SET  last_name  = ? , ferst_name = ? , role_id = ?  where id = ?";
         conn = ConnectDb.getInstance().getConnection();
         PreparedStatement stat = conn.prepareStatement(sql);
         stat.setString(1,obgect.getLast_name());
         stat.setString(2,obgect.getFerst_name());
         stat.setLong(3,obgect.getRole_id());
         stat.setLong(4,obgect.getId());
+        return stat;
+    }
+    public PreparedStatement updateLoginAndPasswordStm(User user) throws SQLException {
+        String sql  = "UPDATE "+TABLE_NAME+" SET  login  = ? , password = ?  where id = ?";
+        conn = ConnectDb.getInstance().getConnection();
+        PreparedStatement stat = conn.prepareStatement(sql);
+        stat.setString(1,user.getLogin());
+        stat.setString(2,user.getPassword());
+        stat.setLong(3,user.getId());
         return stat;
     }
 
@@ -202,6 +187,38 @@ public class UserDB extends AbstractObgectDb<User>{
         PreparedStatement stm = conn.prepareStatement(sql);
         stm.setString(1,text);
         stm.setString(2,text);
+        return stm;
+    }
+
+    public PreparedStatement createUserByLoginAndPassword(String login,String password)throws SQLException{
+        String sql = "SELECT * FROM sites.user where login = ? and password = ?";
+        conn = ConnectDb.getInstance().getConnection();
+        PreparedStatement stm = conn.prepareStatement(sql);
+        stm.setString(1,login);
+        stm.setString(2,password);
+        return stm;
+    }
+
+    public PreparedStatement checkRepeatLoginStm (String login) throws SQLException {
+        String sql = "SELECT id FROM sites.user where login = ?";
+        conn = ConnectDb.getInstance().getConnection();
+        PreparedStatement stm = conn.prepareStatement(sql);
+        stm.setString(1,login);
+
+
+        return stm;
+    }
+
+    public PreparedStatement createUserByNameByLastNAme_byNumber(String name,String lastName,int collectionId) throws SQLException {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT * FROM "+TABLE_NAME +" u ");
+        sql.append("JOIN sites.spr_collections col on col.id = u.collection_id ");
+        sql.append("WHERE u.last_name = ? AND u.ferst_name = ? and col.number = ?");
+        conn = ConnectDb.getInstance().getConnection();
+        PreparedStatement stm = conn.prepareStatement(sql.toString());
+        stm.setString(1,lastName);
+        stm.setString(2,name);
+        stm.setInt(3,collectionId);
         return stm;
     }
 

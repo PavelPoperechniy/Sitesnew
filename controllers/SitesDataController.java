@@ -78,7 +78,7 @@ public class SitesDataController {
         initComboBox();
         init_btn_Act();
         initLabel();
-        initImages();
+      //  initImages();
         init = true;
         user = parentController.getUser();
 
@@ -111,15 +111,18 @@ public class SitesDataController {
 
 
     public void actAction(ActionEvent actionEvent) {
+        boolean flag = false;
         if(sites.isBusy()) {
-           giveSites();
+         flag = giveSites();
         }
         else returnSites();
         Node node = (Node)actionEvent.getSource();
         Window window = (Window)node.getScene().getWindow();
         listComboBox.clear();
         seachByLastname.getItems().clear();
-        window.hide();
+        if(flag) {
+            window.hide();
+        }
 
 
     }
@@ -201,7 +204,8 @@ public class SitesDataController {
         return text;
     }
 
-    private void giveSites(){
+    private boolean giveSites(){
+        boolean flag = false;
         if (listUser.containsKey(seachByLastname.getValue())) {
             Reservation reservation = new Reservation();
             reservation.setUser(listUser.get(seachByLastname.getValue()));
@@ -215,11 +219,13 @@ public class SitesDataController {
             parentController.getListFreeSites().removeAll(sites);
             Util_Sites.getInstance().chekDate(sites,false);
             parentController.getListBusySites().addAll(sites);
+            flag = true;
 
         } else {
             InformWindow informWindow = new InformWindow();
             informWindow.informWindow("Ошибка ввода данных", "Выберете имя из списка");
         }
+        return flag;
     }
 
     private void returnSites(){

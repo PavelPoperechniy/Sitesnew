@@ -11,6 +11,9 @@ import obgektDB.ReservationDb;
 import obgektDB.SitesDB;
 import obgektDB.UserDB;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -50,6 +53,35 @@ public class Util_Sites {
         return flag;
     }
 
+    public String stringInMD5(String password){
+        String passwordMD5 = null;
+        MessageDigest m = null;
+        try {
+            m = MessageDigest.getInstance("MD5");
+            m.reset();
+            m.update(password.getBytes());
+            byte[] digest = m.digest();
+            BigInteger bigInt = new BigInteger(1,digest);
+            passwordMD5= bigInt.toString(16);
+            while(passwordMD5.length() < 32 ){
+                passwordMD5 = "0"+passwordMD5;
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return passwordMD5;
+    }
+
+    public User createUser(String name,String lastName,int collectionId) throws SQLException {
+        User user = UserDB.getInstance().getObgect(UserDB.getInstance().createUserByNameByLastNAme_byNumber(name,lastName,collectionId));
+        return user;
+    }
+
+    public boolean updateLoginAndPassword(User user) throws SQLException {
+     return    UserDB.getInstance().update_dataObgectDB(UserDB.getInstance().updateLoginAndPasswordStm(user));
+
+    }
+
     public  boolean updateObgectDB(Object object) throws SQLException {
         boolean flag = false;
         if (object instanceof Sites) {
@@ -68,13 +100,16 @@ public class Util_Sites {
     }
 
 
-    public boolean chekTextFaild(TextField textField) {
+    public boolean checkEmptyTextField(TextField textField) {
         boolean flag = true;
         if (textField.getText().trim().isEmpty()) {
             flag = false;
         }
         return flag;
     }
+   public boolean checkRepeatLogin(String login) throws SQLException {
+     return  UserDB.getInstance().checkRepeatLogin(login);
+   }
 
     public void chekDate(Sites sites, boolean status) {
         if (!status) {
@@ -208,6 +243,13 @@ public class Util_Sites {
             str.append(" меньше дня тому назад");
         }
         sites.setTimeStatus(str.toString());
+    }
+
+    public User checkUser(String login,String password)throws SQLException{
+       User user = null;
+       user = UserDB.getInstance().getObgect(UserDB.getInstance().createUserByLoginAndPassword(login,password));
+        System.out.println("Yes");
+       return user;
     }
 
 

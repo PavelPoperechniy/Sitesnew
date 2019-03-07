@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="388.0" prefWidth="622.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.WindowLoginController">
+   <children>
+      <VBox layoutX="240.0" layoutY="74.0" prefHeight="200.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane prefHeight="220.0" prefWidth="521.0" style="-fx-border-radius: 10px;">
+               <children>
+                  <TextField fx:id="textLogin" layoutX="112.0" layoutY="86.0" prefHeight="37.0" prefWidth="281.0" promptText="введите логин" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="86.0" />
+                  <TextField fx:id="textPassword" accessibleRole="PASSWORD_FIELD" layoutX="-40.0" layoutY="152.0" prefHeight="37.0" prefWidth="281.0" promptText="введите пароль" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="152.0" />
+                  <Label layoutX="301.0" layoutY="31.0" text="Введите данные для входа" AnchorPane.leftAnchor="200.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="51.0" layoutY="96.0" text="Логин" AnchorPane.leftAnchor="20.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="32.0" layoutY="162.0" text="Пароль" AnchorPane.leftAnchor="20.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="70.0" prefWidth="521.0">
+               <children>
+                  <TextField fx:id="textSecondPassword" accessibleRole="PASSWORD_FIELD" layoutX="-27.0" layoutY="17.0" prefHeight="37.0" prefWidth="281.0" promptText="повторите пароль" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="70.0" />
+                  <Label layoutX="29.0" layoutY="27.0" text="Повторите пароль" AnchorPane.leftAnchor="20.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="139.0" prefWidth="521.0">
+               <children>
+                  <Button fx:id="btn_Chek" layoutX="351.0" layoutY="35.0" mnemonicParsing="false" onAction="#checkAction" prefHeight="37.0" prefWidth="100.0" text="Регистрация" AnchorPane.rightAnchor="70.0">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
